@@ -2,7 +2,6 @@ import sqlite3
 
 
 class Database:
-
     def __init__(self, db):
         self.db = db
         self.conn = sqlite3.connect(self.db)
@@ -15,41 +14,31 @@ class Database:
         self.curs.execute("SELECT * FROM bookstore")
         rows = self.curs.fetchall()
         self.conn.commit()
-        # self.conn.close()
         return rows
 
     def add_book(self, title, author, year, isbn):
         self.curs.execute("INSERT INTO bookstore VALUES(NULL, ?, ?,?, ?)", (title, author, year, isbn))
         self.conn.commit()
-        # self.conn.close()
 
     def find_book(self, name="", author="", year="", isbn=""):
         self.curs.execute("SELECT * FROM bookstore WHERE title=?OR author=? OR year=? or isbn=?",
                           (name, author, year, isbn))
         rows = self.curs.fetchall()
         self.conn.commit()
-        # self.conn.close()
         return rows
 
     def delete_book(self, id):
         self.curs.execute("DELETE FROM bookstore WHERE id=?", (id,))
         self.conn.commit()
-        # self.conn.close()
 
     def update(self, id, title, author, year, isbn):
         self.curs.execute("UPDATE bookstore SET title=?, author=?, year=?, isbn=? WHERE id=?",
                           (id, title, author, year, isbn))
         self.conn.commit()
-        # self.conn.close()
 
     def delete_table(self):
         self.curs.execute("DROP TABLE IF EXISTS bookstore")
         self.conn.commit()
-        # self.conn.close()
 
     def __del__(self):
-        # when script executes
         self.conn.close()
-
-# print(view_all_books())
-# print(find_book("Red"))
